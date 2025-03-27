@@ -48,7 +48,7 @@ def link_about_us_button() -> InlineKeyboardMarkup:
     kb.button(text='Мы в вк',url='https://vk.com/kubikkubikru')
     kb.button(text='Мы в яндекс маркете',url='https://market.yandex.ru/business--kubik-kubik/121482691?generalContext=t%3DshopInShop%3Bi%3D1%3Bbi%3D121482691%3B&rs=eJwzEv3EKMTBKLDwEKsEg0bL5xNyGgdmnZQDAE3yB9Q%2C&searchContext=sins_ctx')
     kb.button(text='Мы в авито',url='https://www.avito.ru/user/092af343bd36e5ba4592ed8aa8b31611/profile?src=sharing')
-    kb.button(text='Наш сайт',web_app=WebAppInfo('https://kubik-kubik.ru/'))  
+    kb.button(text='Наш сайт',web_app=WebAppInfo(url ='https://kubik-kubik.ru/'))  
     kb.adjust(1)
     return kb.as_markup()
 

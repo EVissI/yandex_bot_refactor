@@ -1,5 +1,5 @@
 from typing import Dict
-from aiogram.types import ReplyKeyboardMarkup, ReplyKeyboardRemove
+from aiogram.types import ReplyKeyboardMarkup, ReplyKeyboardRemove,WebAppInfo
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 from loguru import logger
 
@@ -50,7 +50,7 @@ class MainKeyboard:
 
         for val in MainKeyboard.get_user_kb_texts().values():
             kb.button(text=val)
-
+        kb.button(text='Наш сайт',web_app=WebAppInfo(url ='https://kubik-kubik.ru/'))
         if user_role == User.Role.admin:
             for val in MainKeyboard.get_admin_kb_texts().values():
                 kb.button(text=val)
