@@ -33,6 +33,7 @@ def show_category_inl_kb(category_list:list[GoodsCategory],selected_product_shee
     kb.adjust(1)
     return kb.as_markup()
 
+
 def buy_button(goods:Goods) -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
     kb.button(text='Купить',callback_data=BuyByArticul(
@@ -40,6 +41,8 @@ def buy_button(goods:Goods) -> InlineKeyboardMarkup:
     ).pack())
     kb.adjust(1)
     return kb.as_markup()
+
+
 def link_about_us_button() -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
     kb.button(text='Мы в вк',url='https://vk.com/kubikkubikru')
@@ -47,7 +50,7 @@ def link_about_us_button() -> InlineKeyboardMarkup:
     kb.button(text='Мы в авито',url='https://www.avito.ru/user/092af343bd36e5ba4592ed8aa8b31611/profile?src=sharing')
     kb.button(text='Наш сайт',url='https://kubik-kubik.ru/')   
     kb.adjust(1)
-
+    return kb.as_markup()
 def show_product_inl_kb(goods_list:list[Goods], product_id:int, selected_product_sheet_type:int, category_id:int = None,
                         page = 0) -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
