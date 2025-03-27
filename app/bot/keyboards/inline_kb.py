@@ -51,6 +51,8 @@ def link_about_us_button() -> InlineKeyboardMarkup:
     kb.button(text='Наш сайт',url='https://kubik-kubik.ru/')   
     kb.adjust(1)
     return kb.as_markup()
+
+
 def show_product_inl_kb(goods_list:list[Goods], product_id:int, selected_product_sheet_type:int, category_id:int = None,
                         page = 0) -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
