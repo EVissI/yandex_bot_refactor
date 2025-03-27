@@ -3,7 +3,7 @@
     image: postgres
     restart: always
     environment:
-      POSTGRES_DB: promo
+      POSTGRES_DB: yandex
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
     volumes:
