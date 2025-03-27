@@ -55,7 +55,7 @@ class MainKeyboard:
             for val in MainKeyboard.get_admin_kb_texts().values():
                 kb.button(text=val)
         kb.adjust(
-            2,2,1,
+            2,2,1 ,
             len(MainKeyboard.get_admin_kb_texts()),
         )
 
