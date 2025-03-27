@@ -1,0 +1,27 @@
+﻿services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: promo
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    volumes:
+      - pgdata:/var/lib/postgresql/data 
+  telegram_bot:
+      build: .
+      container_name: yandex_bot
+      command: /bin/sh -c "alembic upgrade head && python -m app.bot.main"
+      ports:
+        - "2111:2111"
+      env_file:
+        - .env
+      depends_on:
+        - db  
+
+
+volumes:
+  pgdata:
+networks:
+  app_network:
+    driver: bridge
