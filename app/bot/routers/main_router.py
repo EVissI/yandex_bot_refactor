@@ -3,6 +3,7 @@ from aiogram.types import Message
 from aiogram.filters import CommandStart
 from loguru import logger
 from app.bot.common.messages import TEXTS
+from app.bot.keyboards.inline_kb import link_about_us_button
 from app.bot.keyboards.markup_kb import MainKeyboard
 from app.db.dao import UserDAO
 from app.db.database import async_session_maker
@@ -71,4 +72,4 @@ async def cmd_start(message: Message):
 
 @main_router.message(F.text == MainKeyboard.get_user_kb_texts().get('about_us'))
 async def cmd_about_us(message:Message):
-    await message.answer(TEXTS.get('about_us'))
+    await message.answer(TEXTS.get('about_us'),reply_markup=link_about_us_button())

@@ -40,6 +40,13 @@ def buy_button(goods:Goods) -> InlineKeyboardMarkup:
     ).pack())
     kb.adjust(1)
     return kb.as_markup()
+def link_about_us_button() -> InlineKeyboardMarkup:
+    kb = InlineKeyboardBuilder()
+    kb.button(text='Мы в вк',url='https://vk.com/kubikkubikru')
+    kb.button(text='Мы в яндекс маркете',url='https://market.yandex.ru/business--kubik-kubik/121482691?generalContext=t%3DshopInShop%3Bi%3D1%3Bbi%3D121482691%3B&rs=eJwzEv3EKMTBKLDwEKsEg0bL5xNyGgdmnZQDAE3yB9Q%2C&searchContext=sins_ctx')
+    kb.button(text='Мы в авито',url='https://www.avito.ru/user/092af343bd36e5ba4592ed8aa8b31611/profile?src=sharing')
+    kb.button(text='Наш сайт',url='https://kubik-kubik.ru/')   
+    kb.adjust(1)
 
 def show_product_inl_kb(goods_list:list[Goods], product_id:int, selected_product_sheet_type:int, category_id:int = None,
                         page = 0) -> InlineKeyboardMarkup:

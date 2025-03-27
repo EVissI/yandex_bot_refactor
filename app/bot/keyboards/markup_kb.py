@@ -18,8 +18,8 @@ def back_button():
 class MainKeyboard:
     __user_kb_texts_dict_ru = {
         "goods_list": '🛍️ Просмотр товаров',
-        "search_by_sku": "🔍 Поиск по артикулу",
         'goods_not_in_cash': '📦 Товары на заказ',
+        "search_by_sku": "🔍 Поиск по артикулу",
         'about_us': 'ℹ️ О нас'
     }
 
@@ -55,7 +55,7 @@ class MainKeyboard:
             for val in MainKeyboard.get_admin_kb_texts().values():
                 kb.button(text=val)
         kb.adjust(
-            len(MainKeyboard.get_user_kb_texts()),
+            2,2,
             len(MainKeyboard.get_admin_kb_texts()),
         )
 
