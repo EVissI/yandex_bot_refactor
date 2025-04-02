@@ -6,11 +6,13 @@
       POSTGRES_DB: yandex
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
+    ports:
+      - "5438:5438"
     volumes:
       - pgdata:/var/lib/postgresql/data 
   telegram_bot:
       build: .
-      container_name: yandex_bot
+      container_name: yandex_bot_v2
       command: /bin/sh -c "alembic upgrade head && python -m app.bot.main"
       ports:
         - "2111:2111"

@@ -7,23 +7,24 @@ from loguru import logger
 
 from sqlalchemy import func, TIMESTAMP, inspect, text
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
-from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine, AsyncSession
+from sqlalchemy.ext.asyncio import (
+    AsyncAttrs,
+    async_sessionmaker,
+    create_async_engine,
+    AsyncSession,
+)
 from app.config import settings
 
 engine = create_async_engine(url=str(settings.DB_URL))
 async_session_maker = async_sessionmaker(engine, class_=AsyncSession)
 
+
 class Base(AsyncAttrs, DeclarativeBase):
     __abstract__ = True
 
-    created_at: Mapped[datetime] = mapped_column(
-        TIMESTAMP,
-        server_default=func.now()
-    )
+    created_at: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
-        TIMESTAMP,
-        server_default=func.now(),
-        onupdate=func.now()
+        TIMESTAMP, server_default=func.now(), onupdate=func.now()
     )
 
     def to_dict(self, exclude_none: bool = False):

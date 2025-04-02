@@ -1,5 +1,4 @@
 ﻿import os
-from urllib.parse import quote
 from loguru import logger
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
@@ -16,8 +15,12 @@ class Settings(BaseSettings):
     BOT_TOKEN: SecretStr 
     ROOT_ADMIN_IDS: List[int] 
 
+    YOOKASSA_SHOP_ID: int
+    YOOKASSA_API_KEY:SecretStr
+
     YA_API_KEY: str
     YA_CAMPAIGN_ID:int
+
     DB_URL:PostgresDsn
 
     model_config = SettingsConfigDict(
@@ -25,6 +28,7 @@ class Settings(BaseSettings):
     )
 
 settings = Settings()
+
 
 def setup_logger(app_name: str):
     log_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "log")

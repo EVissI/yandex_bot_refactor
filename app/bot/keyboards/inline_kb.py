@@ -5,9 +5,11 @@ from aiogram.filters.callback_data import CallbackData
 
 from app.db.models import GoodsCategory,Goods
 
+
 class ChooseCategory(CallbackData, prefix="choose_cat"):
     category_id:int    
     selected_product_sheet_type:int
+
 
 class GoodsList(CallbackData, prefix="choose_product"):
     page:Optional[int]
@@ -16,8 +18,14 @@ class GoodsList(CallbackData, prefix="choose_product"):
     product_id:Optional[int]
     selected_product_sheet_type:int
 
+
 class BuyByArticul(CallbackData, prefix="buy_by_articul"):
     product_id:int
+
+
+class Invoice(CallbackData,prefix='invoice'):
+    product_id:int
+
 
 def show_category_inl_kb(category_list:list[GoodsCategory],selected_product_sheet_type:str) -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
@@ -34,14 +42,20 @@ def show_category_inl_kb(category_list:list[GoodsCategory],selected_product_shee
     return kb.as_markup()
 
 
+def invoce_butn(product_id:int):
+    kb = InlineKeyboardBuilder()
+    kb.button(text='Оплатить',callback_data=Invoice(
+        product_id=product_id
+    ).pack())
+    return kb.as_markup()
+
+
 def buy_button(goods:Goods) -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
     kb.button(text='Купить',callback_data=BuyByArticul(
         category_id=goods.category_id,
     ).pack())
-    kb.adjust(1)
     return kb.as_markup()
-
 
 def link_about_us_button() -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
@@ -76,7 +90,7 @@ def show_product_inl_kb(goods_list:list[Goods], product_id:int, selected_product
             selected_product_sheet_type = selected_product_sheet_type
         ).pack())
     if selected_product_sheet_type == 1:
-        kb.button(text='Купить',url='https://market.yandex.ru/business--kubik-kubik/121482691?generalContext=t%3DshopInShop%3Bi%3D1%3Bbi%3D121482691%3B&rs=eJwzEv3EKMTBKLDwEKsEg0bL5xNyGgdmnZQDAE3yB9Q%2C&searchContext=sins_ctx',
+        kb.button(text='Купить',
                 callback_data=GoodsList(
                 page=None,
                 action='Buy',
@@ -85,7 +99,7 @@ def show_product_inl_kb(goods_list:list[Goods], product_id:int, selected_product
                 selected_product_sheet_type = selected_product_sheet_type
             ).pack())
     if selected_product_sheet_type == 2:
-        kb.button(text='Заказать',url='https://market.yandex.ru/business--kubik-kubik/121482691?generalContext=t%3DshopInShop%3Bi%3D1%3Bbi%3D121482691%3B&rs=eJwzEv3EKMTBKLDwEKsEg0bL5xNyGgdmnZQDAE3yB9Q%2C&searchContext=sins_ctx',
+        kb.button(text='Заказать',
                 callback_data=GoodsList(
                 page=None,
                 action='Buy',

@@ -12,49 +12,57 @@ from app.db.schemas import TelegramIDModel, UserModel
 from app.config import admins, bot
 from app.bot.routers.admin_routers.main_admin_router import admin_router
 from app.bot.routers.user_routers.main_user_router import user_router
+
 main_router = Router()
 main_router.include_router(user_router)
 main_router.include_router(admin_router)
+
 
 @main_router.message(CommandStart())
 async def cmd_start(message: Message):
     try:
         user_id = message.from_user.id
         async with async_session_maker() as session:
-            user_info = await UserDAO.find_one_or_none(session=session,
-                filters=TelegramIDModel(telegram_id=user_id)
+            user_info = await UserDAO.find_one_or_none(
+                session=session, filters=TelegramIDModel(telegram_id=user_id)
             )
         if user_info:
-            msg = 'заглушка'
+            msg = "заглушка"
             async with async_session_maker() as session:
-                await UserDAO.update(session=session,
+                await UserDAO.update(
+                    session=session,
                     filters=TelegramIDModel(telegram_id=user_id),
                     values=UserModel.model_validate(user_info.to_dict()),
                 )
-            await message.answer(msg, reply_markup=MainKeyboard.build_main_kb(user_info.role))
+            await message.answer(
+                msg, reply_markup=MainKeyboard.build_main_kb(user_info.role)
+            )
             return
         if user_id in admins:
             values = UserModel(
                 telegram_id=user_id,
                 username=message.from_user.username,
                 first_name=message.from_user.first_name,
+                phone_number=None,
                 role=User.Role.admin,
             )
             async with async_session_maker() as session:
                 await UserDAO.add(session=session, values=values)
             await message.answer(
-                "Привет администрации", reply_markup=MainKeyboard.build_main_kb(values.role)
+                "Привет администрации",
+                reply_markup=MainKeyboard.build_main_kb(values.role),
             )
             return
         values = UserModel(
             telegram_id=user_id,
             username=message.from_user.username,
             first_name=message.from_user.first_name,
+            phone_number=None,
             role=User.Role.user,
         )
         async with async_session_maker() as session:
-            await UserDAO.add(session=session,values=values)
-        msg = 'заглушка'
+            await UserDAO.add(session=session, values=values)
+        msg = "заглушка"
         await message.answer(msg, reply_markup=MainKeyboard.build_main_kb(values.role))
         for admin in admins:
             await bot.send_message(
@@ -66,10 +74,9 @@ async def cmd_start(message: Message):
         logger.error(
             f"Ошибка при выполнении команды /start для пользователя {message.from_user.id}: {e}"
         )
-        await message.answer(
-            'что-то пошло не так'
-        )
+        await message.answer("что-то пошло не так")
 
-@main_router.message(F.text == MainKeyboard.get_user_kb_texts().get('about_us'))
-async def cmd_about_us(message:Message):
-    await message.answer(TEXTS.get('about_us'),reply_markup=link_about_us_button())
+
+@main_router.message(F.text == MainKeyboard.get_user_kb_texts().get("about_us"))
+async def cmd_about_us(message: Message):
+    await message.answer(TEXTS.get("about_us"), reply_markup=link_about_us_button())
