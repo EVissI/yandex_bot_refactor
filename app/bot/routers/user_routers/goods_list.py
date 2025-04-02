@@ -17,7 +17,6 @@ from aiogram.fsm.state import State, StatesGroup
 from loguru import logger
 
 from app.bot.utils.market_parsing import get_goods_count
-from app.bot.utils.yookassa_func import create_payment
 from app.db.dao import GoodsDAO, GoodsCategoryDAO, PaymentDAO, UserDAO
 from app.db.database import async_session_maker
 from app.db.models import User
