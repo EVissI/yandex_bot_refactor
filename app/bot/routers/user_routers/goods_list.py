@@ -230,8 +230,8 @@ async def process_pre_check_out_query(
         await bot.answer_pre_checkout_query(pre_checkout_query.id, ok=True)
 
 
-@goods_list_router.message(F.successful_payment)
-async def process_successful_payment(message: Message, state: FSMContext):
+@goods_list_router.message(F.successful_payment,GetUserInfoFilter())
+async def process_successful_payment(message: Message, state: FSMContext,user_info:User):
     await message.reply(
         f"Платеж на сумму {message.successful_payment.total_amount // 100} "
         f"{message.successful_payment.currency} прошел успешно!"
@@ -239,6 +239,20 @@ async def process_successful_payment(message: Message, state: FSMContext):
     logger.info(f"Получен платеж от {message.from_user.id}")
     current_state = await state.get_state()
     state_data = await state.get_data()
+    product_name = state_data.get("product_name")
+    amount = message.successful_payment.total_amount // 100
+    phone_number = user_info.phone_number
+    currency = message.successful_payment.currency
+    user_name = message.from_user.full_name or message.from_user.username or "Неизвестный пользователь"
+
+    group_message = (
+        f"🛒 <b>Новая покупка!</b>\n"
+        f"👤 Покупатель: {user_name}, номер телефона{phone_number}\n"
+        f"📦 Товар: {product_name}\n"
+        f"💰 Сумма: {amount} {currency}\n"
+        f"✅ Статус: Успешно оплачено"
+    )
+    await bot.send_message(chat_id='-1002509542406', text=group_message, parse_mode="HTML")
     async with async_session_maker() as session:
         await PaymentDAO.add(
             session,
