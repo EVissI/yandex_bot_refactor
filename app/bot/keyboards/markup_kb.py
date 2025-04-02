@@ -26,7 +26,7 @@ class SearchProductKeyboard:
     __search_kb_text_dict_ru = {
         'search_by_sku':'Поиск по артикулу',
         'search_by_name':'Поиск по названию',
-        'back':'назад'
+        'back':'Назад'
     }   
 
     @staticmethod
@@ -58,6 +58,7 @@ class MainKeyboard:
     __admin_kb_text_dict_ru = {
         "update_goods": "обновить список товаров"
     }
+    
     @staticmethod
     def get_user_kb_texts(key = None) -> Dict[str, str] | None:
         """

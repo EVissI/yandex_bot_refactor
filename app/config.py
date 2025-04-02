@@ -14,6 +14,8 @@ class Settings(BaseSettings):
 
     BOT_TOKEN: SecretStr 
     ROOT_ADMIN_IDS: List[int] 
+    CHAT_FOR_NOTIFICATION: str
+
 
     YOOKASSA_SHOP_ID: int
     YOOKASSA_API_KEY:SecretStr

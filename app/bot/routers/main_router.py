@@ -5,6 +5,7 @@ from loguru import logger
 from app.bot.common.messages import TEXTS
 from app.bot.keyboards.inline_kb import link_about_us_button
 from app.bot.keyboards.markup_kb import MainKeyboard
+from app.bot.middlewares.is_admin import CheckIsAdmin
 from app.db.dao import UserDAO
 from app.db.database import async_session_maker
 from app.db.models import User
@@ -15,6 +16,8 @@ from app.bot.routers.user_routers.main_user_router import user_router
 
 main_router = Router()
 main_router.include_router(user_router)
+
+admin_router.message.middleware(CheckIsAdmin())
 main_router.include_router(admin_router)
 
 

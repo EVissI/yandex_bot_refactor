@@ -252,7 +252,9 @@ async def process_successful_payment(message: Message, state: FSMContext,user_in
         f"💰 Сумма: {amount} {currency}\n"
         f"✅ Статус: Успешно оплачено"
     )
-    await bot.send_message(chat_id='-1002509542406', text=group_message, parse_mode="HTML")
+    await bot.send_message(chat_id=settings.CHAT_FOR_NOTIFICATION, text=group_message, parse_mode="HTML")
+
+    
     async with async_session_maker() as session:
         await PaymentDAO.add(
             session,
