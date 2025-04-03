@@ -1,7 +1,7 @@
-﻿
-import asyncio
+﻿import asyncio
 from app.bot.routers.main_router import main_router
 from app.config import setup_logger
+
 setup_logger("bot")
 from loguru import logger
 from app.db.models import User
@@ -9,7 +9,8 @@ from app.config import bot, admins, dp
 from app.db.dao import UserDAO
 from app.db.database import async_session_maker
 from app.db.schemas import UserFilterModel
-from aiogram.types import BotCommand, BotCommandScopeDefault,BotCommandScopeChat
+from aiogram.types import BotCommand, BotCommandScopeDefault, BotCommandScopeChat
+
 
 async def set_commands():
     commands = [
@@ -18,14 +19,17 @@ async def set_commands():
     await bot.set_my_commands(commands, scope=BotCommandScopeDefault())
 
     async with async_session_maker() as session:
-        admins:list[User] = await UserDAO.find_all(session=session,filters=UserFilterModel(role=User.Role.admin))
+        admins: list[User] = await UserDAO.find_all(
+            session=session, filters=UserFilterModel(role=User.Role.admin)
+        )
 
     commands.append(BotCommand(command="admin_button", description="заглушка"))
 
     # Устанавливаем команды для каждого админа отдельно
     for admin in admins:
-        await bot.set_my_commands(commands, scope=BotCommandScopeChat(chat_id=admin.telegram_id))
-
+        await bot.set_my_commands(
+            commands, scope=BotCommandScopeChat(chat_id=admin.telegram_id)
+        )
 
 
 async def start_bot():
@@ -54,7 +58,7 @@ async def main():
     # регистрация функций
     dp.startup.register(start_bot)
     dp.shutdown.register(stop_bot)
-    try:       
+    try:
         await bot.delete_webhook(drop_pending_updates=True)
         await dp.start_polling(bot)
     finally:

@@ -1,4 +1,5 @@
 ﻿import os
+import vk_api
 from loguru import logger
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
@@ -16,12 +17,14 @@ class Settings(BaseSettings):
     ROOT_ADMIN_IDS: List[int] 
     CHAT_FOR_NOTIFICATION: str
 
-
     YOOKASSA_SHOP_ID: int
     YOOKASSA_API_KEY:SecretStr
 
     YA_API_KEY: str
     YA_CAMPAIGN_ID:int
+
+    VK_API_KEY:SecretStr
+    VK_ID_GROUP:int
 
     DB_URL:PostgresDsn
 
@@ -50,4 +53,6 @@ def setup_logger(app_name: str):
 
 bot = Bot(token=settings.BOT_TOKEN.get_secret_value(), default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher(storage=MemoryStorage())
+
+vk_session = vk_api.VkApi(token=settings.VK_API_KEY.get_secret_value())
 admins = settings.ROOT_ADMIN_IDS

@@ -73,9 +73,9 @@ async def take_category_callback(query: CallbackQuery, callback_data: ChooseCate
         return
     await query.message.delete()
     first_product = goods_list[0]
-    if first_product.picture:
+    if first_product.tg_picture_id:
         await query.message.answer_photo(
-            first_product.picture,
+            first_product.tg_picture_id,
             product_card_msg(first_product),
             reply_markup=show_product_inl_kb(
                 goods_list,
@@ -109,7 +109,7 @@ async def take_category_callback(query: CallbackQuery, callback_data: GoodsList)
             )
     await query.message.delete()
     await query.message.answer_photo(
-        goods_list[callback_data.page].picture,
+        goods_list[callback_data.page].tg_picture_id,
         product_card_msg(goods_list[callback_data.page]),
         reply_markup=show_product_inl_kb(
             goods_list,
@@ -254,7 +254,7 @@ async def process_successful_payment(message: Message, state: FSMContext,user_in
     )
     await bot.send_message(chat_id=settings.CHAT_FOR_NOTIFICATION, text=group_message, parse_mode="HTML")
 
-    
+
     async with async_session_maker() as session:
         await PaymentDAO.add(
             session,

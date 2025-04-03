@@ -45,7 +45,8 @@ class GoodsModel(BaseModel):
     sku: Optional[str]
     price: int
     count: Optional[int]
-    picture: Optional[str]
+    tg_picture_id: Optional[str]
+    vk_picture_id: Optional[int]
 
 
 class GoodsFilter(BaseModel):
@@ -57,7 +58,8 @@ class GoodsFilter(BaseModel):
     sku: Optional[str] = None
     price: int = None
     count: Optional[int] = None
-    picture: Optional[str] = None
+    tg_picture_id: Optional[str] = None
+    vk_picture_id: Optional[int] = None
 
 class PaymentModel(BaseModel):
     payment_id:str

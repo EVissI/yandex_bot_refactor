@@ -70,9 +70,9 @@ async def return_product_card(message: Message, state: FSMContext):
         product = await GoodsDAO.find_one_or_none(session, filters=GoodsFilter(sku=sku))
     if product:
         msg = product_card_msg(product)
-        if product.picture:
+        if product.tg_picture_id:
             await message.answer_photo(
-                product.picture,
+                product.tg_picture_id,
                 caption=msg,
                 reply_markup=invoce_butn(product.id),
             )
@@ -163,9 +163,9 @@ async def process_products(query: CallbackQuery, state: FSMContext):
                 "product_price":product.price
             }
         )
-    if product.picture:
+    if product.tg_picture_id:
         await query.message.answer_photo(
-            product.picture,
+            product.tg_picture_id,
             caption=msg,
             reply_markup=invoce_butn(product_id),
         )

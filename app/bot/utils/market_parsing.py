@@ -15,6 +15,8 @@ from bs4 import BeautifulSoup
 
 from sqlalchemy.exc import SQLAlchemyError
 
+from app.vk_updater.utils import upload_photo_to_vk
+
 
 def strip_html_tags(s):
     """
@@ -42,16 +44,24 @@ def extract_articul(text):
 async def process_offer(offer):
     """
     Обрабатывает информацию о товаре, скачивает изображения и возвращает
-    строку с путями к изображениям, разделенными запятыми.
+    кортеж из file_id Telegram и photo_id ВКонтакте.
     """
-
-    image_urls = offer.get("offer").get("pictures")
+    image_urls = offer.get("offer", {}).get("pictures", [])
     if not image_urls:
         print("Нет URL изображений для скачивания.")
-        return ""  # Возвращаем пустую строку, если нет изображений
-    img = image_urls[0]
-    msg = await bot.send_photo(admins[0], img)
-    return msg.photo[-1].file_id
+        return None, None  # Возвращаем кортеж с пустыми значениями
+
+    img_url = image_urls[0]
+
+    # Отправляем фото в Telegram
+    msg = await bot.send_photo(admins[0], img_url)
+    tg_file_id = msg.photo[-1].file_id
+
+    # Загружаем фото в ВКонтакте
+    vk_photo_id = await upload_photo_to_vk(img_url)
+
+    return tg_file_id, vk_photo_id
+
 
 
 async def parsing_market(chat_id):
@@ -85,7 +95,7 @@ async def parsing_market(chat_id):
                         if not await GoodsDAO.find_one_or_none(
                             session, GoodsFilter(name=name)
                         ):
-                            picture_id = await process_offer(offer)
+                            tg_picture_id, vk_picture_id = await process_offer(offer)
 
                             offer_id = offer.get("offer").get("offerId")
                             description = offer.get("offer").get("description")
@@ -100,7 +110,8 @@ async def parsing_market(chat_id):
                                     description=description,
                                     sku=sku,
                                     price=price,
-                                    picture=picture_id,
+                                    tg_picture_id=tg_picture_id,
+                                    vk_picture_id=vk_picture_id,
                                     count=count,
                                     category_id=marker_id,
                                 )
