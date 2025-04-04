@@ -45,6 +45,7 @@ class Goods(Base):
     count: Mapped[Optional[int]]
     tg_picture_id: Mapped[Optional[str]]
     vk_picture_id: Mapped[Optional[int]]
+    vk_item_id:Mapped[Optional[int]]
 
     category_id = Column(Integer, ForeignKey("goods_category.category_id"))
     goods_cat = relationship("GoodsCategory", back_populates="the_goods")

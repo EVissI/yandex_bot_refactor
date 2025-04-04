@@ -114,6 +114,7 @@ async def parsing_market(chat_id):
                                     vk_picture_id=vk_picture_id,
                                     count=count,
                                     category_id=marker_id,
+                                    vk_item_id=None
                                 )
                                 await GoodsDAO.add(session, good)
                             except ValidationError:
